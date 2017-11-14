@@ -12,7 +12,7 @@ The screenshots are from a Mac but the instructions should be the same for Windo
     
         ![select_platform](_static/select_platform.png) 
     
-    * Click the "Get it now!" button
+    * Click the "GET IT NOW" button
     
         ![get_it_now](_static/get_it_now.png)
     
@@ -20,7 +20,7 @@ The screenshots are from a Mac but the instructions should be the same for Windo
     
         ![fill_in_continue](_static/fill_in_continue.png)
         
-    * Accept Terms and Conditions and click "Continue" to start the download.
+    * Accept Terms and Conditions and click "SUBMIT" to start the download.
     
         ![accept_TC_continue](_static/accept_TC_continue.png)
         
@@ -28,7 +28,7 @@ The screenshots are from a Mac but the instructions should be the same for Windo
 
 3. Unzip the Cloudera VM:
 
-    Right-click cloudera-quickstart-vm-5.4.2-0-virtualbox.zip and select “Extract All…”
+    Right-click cloudera-quickstart-vm-X.X.X-0-virtualbox.zip and select “Extract All…”
 
 4. Start VirtualBox.
 
