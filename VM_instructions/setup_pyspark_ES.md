@@ -1,29 +1,29 @@
-Pyspark setup instructions
-==========================
+Instrucciones de instalación de Pyspark
+=======================================
 
-This page will guide you through the installation and configuration of Pyspark in the Cloudera VM.
+Esta página le guiará a través de la instalación y configuración de Pyspark en la MV de Cloudera.
 
-1. Open VirtualBox and start the Cloudera VM, as you did during the VM installation.
+1. Abra VirtualBox y arranque la MV de Cloudera, tal y como hizo durnate el proceso de instalación de la misma.
 
     ![vm_launch](_static/HdSw4rveEeWg-hLO0rEOAw_8e77353aeafcc336742baf76aa647c8a_Untitled6.png)
 
-2. Open a terminal
+2. Abra un terminal.
 
     ![open_terminal](_static/open_terminal.png)
 
-3. Get the installation script. By running this command in terminal:<p><code>wget https://raw.githubusercontent.com/pic-es/BigDataMOOC/master/scripts/setup_pyspark.sh</code></p>
+3. Descarge el _script_ de instalación, ejecutando este comando en el terminal:<p><code>wget https://raw.githubusercontent.com/pic-es/BigDataMOOC/master/scripts/setup_pyspark.sh</code></p>
 
     ![get_pyspark_setup](_static/get_pyspark_setup.png)
 
-4. Run the installation script and follow the instructions in the screen:
+4. Ejecute el script de instalación y siga la instrucciones que aparecen en la pantalla:
     
-    * Run the installation script
+    * Ejecute este comando en el terminal, para iniciar el proceso de instalación:
         
 	```
 	[cloudera@quickstart ~]$ . setup_pyspark.sh
 	```
 
-    * The script will download the Anaconda package and start its installation:
+    * El script descargará el paquete Anaconda e iniciará su instalación:
         
 	```
 	% Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
@@ -40,7 +40,7 @@ This page will guide you through the installation and configuration of Pyspark i
 	>>> 
 	```
 
-    * Press `ENTER` to see the license agreement.
+    * Pulse `ENTER` para vel el Acuerdo de Licencia
     
 	```
 	================
@@ -68,14 +68,14 @@ This page will guide you through the installation and configuration of Pyspark i
 
 	```
 
-    * Press `q` to exit the license agreement and proceed to agreing to it.
+    * Pulse `q` para salir del Acuerdo de Licencia y proceder a aceptarlo.
     
 	```
 	Do you approve the license terms? [yes|no]
 	>>> 
 	```
 
-    * Type `yes` and press `ENTER`. You will be asked to confirm the installation location.
+    * Escriba `yes` y pulse `ENTER`. Se le preguntará que confirme la ruta de instalación.
     
 	```
 	Anaconda3 will now be installed into this location:
@@ -88,9 +88,9 @@ This page will guide you through the installation and configuration of Pyspark i
 	[/home/cloudera/anaconda3] >>> 
 	```
 
-    * type `ENTER` to agree with the proposed location and the installation of the packages will start.
+    * Pulse `ENTER` para aceptar la ubicación propuesta y la instalación se iniciará. 
     
-        Once it finishes you will be asked to prepend the Anaconda install location to the path. By doing this, the python binary inside it will become the default.
+        Cuando termine, se le preguntará si quiere 
 
 	```
 	installing: yaml-0.1.6-0 ...
@@ -108,7 +108,8 @@ This page will guide you through the installation and configuration of Pyspark i
 	[no] >>> 
 	```    
  
-    * type `yes` and `ENTER` and the installation will be completed. There's no need to open a new terminal. The `setup_pyspark.sh` script takes care of that.
+    * Escriba `yes` y pulse `ENTER` para añadir el directorio de instalación de Anaconda al `PATH`. Haciendo esto, la versión de Python contenida en Anaconda, será la utilizada por defecto. 
+    
     
 	```
 	Prepending PATH=/home/cloudera/anaconda3/bin to PATH in /home/cloudera/.bashrc
@@ -124,7 +125,7 @@ This page will guide you through the installation and configuration of Pyspark i
 
 	```
 
-    * type `pyspark` and `ENTER` to test the Pyspark installation. Once you do this, a browser window with a Jupyter Notebook should open. 
+    * La instalación ha completado. Escriba `pyspark` y pule `ENTER` para comprobar la instalación de Pyspark. Haciendo esto, debería abrirse una ventana de navegador con un Jupyter Notebook.
     
         ![pyspark_notebook](_static/pyspark_notebook.png)
 
