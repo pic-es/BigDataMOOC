@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 
 import os
 import sys
@@ -106,9 +106,16 @@ def get_whole_file_name(ra, dec, file_name=None, scale=IMAGE_PIXSCALE, width=IMA
     return whole_file_name
     
 
-def create_square_images_from_csv(csv_file, scale=IMAGE_PIXSCALE, size=IMAGE_WIDTH_PX):
+def create_square_images_from_csv(args):
+
+    csv_file = args.or_csv_file
+    n_sample = args.n_sample
+    scale = args.scale
+    size = args.side
 
     df = pd.read_csv(csv_file, header=0)
+    if not n_sample is None:
+        df = df.sample(n_sample)
     width=height=size
     for ind, row in df.iterrows():
         ra = row['ra']
@@ -256,7 +263,6 @@ def plot_images_from_array(arr, shape, image_shape=(64, 64)):
             ax.imshow(arr[ind,:].reshape(*image_shape), cmap=plt.get_cmap('gist_heat'), interpolation='none')
     return fig
 
-
 def define_arguments():
     
     parser = argparse.ArgumentParser()
@@ -278,9 +284,22 @@ def define_arguments():
 
     # parser for the plot_sample action
     parser_plot_sample = subparsers.add_parser('plot_sample_images', 
-        help='''query the SDSS server and build a csv with the features 
-        representing the images of the objects in the input csv file''')
+        help='''plot a random sample of images from a features dataset''')
+    parser_plot_sample.add_argument('--or_csv_file', '-o', required=True)
     parser_plot_sample.add_argument('--shape', '-s', required=False, default='3,3')
+    
+    # parser for getting sample jpegs from SDSS
+    parser_get_jpegs = subparsers.add_parser('get_jpegs',
+        help='Get sample jpeg images from SDSS')
+    parser_get_jpegs.add_argument('--or_csv_file', '-o', required=True,
+        help='Csv file containing a set of objects')
+    parser_get_jpegs.add_argument('--scale', '-s', required=False, type=float,
+        default=IMAGE_PIXSCALE, help='image pixelscale')
+    parser_get_jpegs.add_argument('--side', '-d', required=False, type=int,
+        default=IMAGE_SIZE_PX, help='size of the image side in pixels')
+    parser_get_jpegs.add_argument('--n_sample', '-n', required=False, type=int,
+        default=100, help='number of sample images to download')
+    parser_get_jpegs.set_defaults(func=create_square_images_from_csv)
     
     parser.add_argument('--loglevel', '-l', required=False, default='INFO')
 
@@ -294,12 +313,15 @@ if __name__ == '__main__':
 
     logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', level=getattr(logging, args.loglevel))
 
-    if args.get_features:
+    args.func(args)
+
+    if hasattr(args, 'get_features'):
         get_features_from_csv_to_csv(args.or_csv_file, args.dest_csv_file, args.scale, args.size)
-    elif args.merge_csvs:
+    elif hasattr(args, 'merge_csvs'):
         merge_csvs(args.or_csv_file.split(','), args.dest_csv_file)
-    elif args.plot_sample_images:
+    elif hasattr(args, 'plot_sample_images'):
         plot_sample_images(args.or_csv_file, args.shape.split(','))
+
 
             
         
