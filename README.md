@@ -15,10 +15,10 @@
 
 ## Capstone Project
 
-0. [Preparación](capstone/_preparation/preparation.md)
-1. [Semana 1](capstone/semana_1/semana_1.md)
-2. [Semana 2](capstone/semana_2/semana_2.md)
-3. [Semana 3](capstone/semana_3/semana_3.md)
-4. [Semana 4](capstone/semana_4/semana_4.md)
-5. [Semana 5](capstone/semana_5/semana_5.md)
+0. [Preparación](capstone/_preparation/README.md)
+1. [Semana 1](capstone/semana_1/README.md)
+2. [Semana 2](capstone/semana_2/README.md)
+3. [Semana 3](capstone/semana_3/README.md)
+4. [Semana 4](capstone/semana_4/README.md)
+5. [Semana 5](capstone/semana_5/README.md)
 
