@@ -15,7 +15,7 @@
 
 ## Capstone Project
 
-0. [Preparación](capstone/_preparation/capstone.md)
+0. [Preparación](capstone/_preparation/preparation.md)
 1. [Semana 1](capstone/semana_1/semana_1.md)
 2. [Semana 2](capstone/semana_2/semana_2.md)
 3. [Semana 3](capstone/semana_3/semana_3.md)
