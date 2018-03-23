@@ -60,9 +60,10 @@ def download_image_bytes(ra, dec, scale=IMAGE_PIXSCALE, width=IMAGE_WIDTH_PX, he
 
     return response
 
-def download_image_jpg(ra, dec, file_name=None, scale=IMAGE_PIXSCALE, width=IMAGE_WIDTH_PX, height=IMAGE_HEIGHT_PX):
+def download_image_jpg(ra, dec, file_name=None, scale=IMAGE_PIXSCALE, 
+        width=IMAGE_WIDTH_PX, height=IMAGE_HEIGHT_PX, root_folder='.'):
 
-    whole_file_name = get_whole_file_name(ra, dec, file_name, scale, width, height)
+    whole_file_name = get_whole_file_name(ra, dec, file_name, scale, width, height, root_folder=root_folder)
     if os.path.exists(whole_file_name):
         print('file already exists: {}'.format(file_name))
     else:
@@ -80,9 +81,9 @@ def read_and_subsample_csv(csv_file, sample_size=SAMPLE_SIZE):
     print(df)
     return df.sample(sample_size)
 
-def download_and_resize(ra, dec, file_name, scale, width_or, height_or, width_dest, height_dest):
+def download_and_resize(ra, dec, file_name, scale, width_or, height_or, width_dest, height_dest, root_folder):
 
-    whole_file_name = get_whole_file_name(ra, dec, file_name, scale, width_dest, height_dest)
+    whole_file_name = get_whole_file_name(ra, dec, file_name, scale, width_dest, height_dest, root_folder)
     if os.path.exists(whole_file_name):
         print('file already exists: {}'.format(file_name))
     else:
@@ -92,9 +93,9 @@ def download_and_resize(ra, dec, file_name, scale, width_or, height_or, width_de
         im_res = im.resize(dest_size, Image.ANTIALIAS)
         im_res.save(whole_file_name, 'JPEG')
     
-def get_whole_file_name(ra, dec, file_name=None, scale=IMAGE_PIXSCALE, width=IMAGE_WIDTH_PX, height=IMAGE_HEIGHT_PX):
+def get_whole_file_name(ra, dec, file_name=None, scale=IMAGE_PIXSCALE, width=IMAGE_WIDTH_PX, height=IMAGE_HEIGHT_PX, root_folder='.'):
 
-    folder_name = FOLDER_NAME.format(scale=scale, width=width, height=height)
+    folder_name = os.path.join(root_folder, FOLDER_NAME.format(scale=scale, width=width, height=height))
     if file_name is None:
         file_name = FILE_NAME.format(ra=ra, dec=dec)
 
@@ -112,6 +113,7 @@ def create_square_images_from_csv(args):
     n_sample = args.n_sample
     scale = args.scale
     size = args.side
+    root_folder = args.root_folder
 
     df = pd.read_csv(csv_file, header=0)
     if not n_sample is None:
@@ -122,9 +124,9 @@ def create_square_images_from_csv(args):
         dec = row['dec']
         file_name = '{}.jpg'.format(row['dr7objid'])
         if size>= 64:
-            download_image_jpg(ra, dec, file_name, scale, width, height)
+            download_image_jpg(ra, dec, file_name, scale, width, height, root_folder=root_folder)
         else:
-            download_and_resize(ra, dec, file_name, scale, 64, 64, width, height)
+            download_and_resize(ra, dec, file_name, scale, 64, 64, width, height, root_folder=root_folder)
 
 
 def get_image_array(ra, dec, scale=IMAGE_PIXSCALE, width=IMAGE_WIDTH_PX, height=IMAGE_HEIGHT_PX):
@@ -178,11 +180,13 @@ def write_features_csv(features, csv_file, n_features):
     df.to_csv(csv_file, index_label='dr7objid')
 
 
-def split_csv(csv_file, chunksize):
+def split_csv(csv_file, chunksize, folder=None):
 
     df = pd.read_csv(csv_file, header=0)
     
-    folder = os.path.dirname(csv_file)
+    if folder is None:
+        folder = os.path.dirname(csv_file)
+
     file_base, file_ext = os.path.splitext(os.path.basename(csv_file))
 
     final_row = 0
@@ -200,7 +204,8 @@ def get_features_from_csv_to_csv(or_csv_file, dest_csv_file=None, scale=IMAGE_PI
 
     logging.info('Getting features from file {}'.format(or_csv_file))
     if dest_csv_file is None:
-        dest_csv_file = 'F_' + or_csv_file
+        dir_name = os.path.dirname(or_csv_file)
+        dest_csv_file = os.path.join(dir_name, 'F_' + os.path.basename(or_csv_file))
     if os.path.exists(dest_csv_file):
         logging.warning('File {} already exists'.format(dest_csv_file))
     else:
@@ -232,18 +237,25 @@ def merge_csvs(or_csv_files_list, dest_csv_file):
         raise Exception('No origin csv files provided')
 
 
-def plot_sample_images(csv_file, shape):
+def plot_sample_images(csv_file, shape, obj_id):
 
-    width, height = [int(s) for s in shape]
+    if obj_id:
+        width = height = 1
+    else:
+        width, height = [int(s) for s in shape]
 
     df = pd.read_csv(csv_file, index_col=0)
-    df_sample = df.sample(width*height)
+    if obj_id:
+        df_sample = df.loc[[obj_id]]
+    else:
+        df_sample = df.sample(width*height)
     fig = plt.figure()
     for i in range(width):
         for j in range(height):
             ind = i*height + j
             ax = fig.add_subplot(width, height, ind + 1)
-            ax.imshow(df.iloc[ind].as_matrix().reshape(64, 64), cmap=plt.get_cmap('viridis'), interpolation='none')
+            ax.imshow(df_sample.iloc[ind].as_matrix().reshape(64, 64), cmap=plt.get_cmap('gist_heat'), interpolation='none')
+            ax.set_title(df_sample.iloc[ind].name)
 
     plt.show()
 
@@ -263,6 +275,18 @@ def plot_images_from_array(arr, shape, image_shape=(64, 64)):
             ax.imshow(arr[ind,:].reshape(*image_shape), cmap=plt.get_cmap('gist_heat'), interpolation='none')
     return fig
 
+def plot_images_wrapper(args):
+    plot_sample_images(args.or_csv_file, args.shape.split(','), args.obj_id)
+
+def merge_csvs_wrapper(args):
+    merge_csvs(args.or_csv_file.split(','), args.dest_csv_file)
+    
+def get_features_wrapper(args):
+    get_features_from_csv_to_csv(args.or_csv_file, args.dest_csv_file, args.scale, args.size)
+
+def split_csvs_wrapper(args):
+    split_csv(args.or_csv_file, args.chunk_size, args.dest_folder)
+
 def define_arguments():
     
     parser = argparse.ArgumentParser()
@@ -276,17 +300,29 @@ def define_arguments():
     parser_get_features.add_argument('--dest_csv_file', '-d', required=False)
     parser_get_features.add_argument('--scale', '-sc', required=False, default=IMAGE_PIXSCALE)
     parser_get_features.add_argument('--size', '-sz', required=False, default=IMAGE_SIZE_PX)
+    parser_get_features.set_defaults(func=get_features_wrapper)
+
+    # parser for the split csvs action
+    parser_split_csvs = subparsers.add_parser('split_csvs', help='pandas based csv file splitting in chunks')
+    parser_split_csvs.add_argument('--or_csv_file', '-o', required=True)
+    parser_split_csvs.add_argument('--chunk_size', '-c', required=False, type=int, default=100)
+    parser_split_csvs.add_argument('--dest_folder', '-d', required=False)
+    parser_split_csvs.set_defaults(func=split_csvs_wrapper)
 
     # parser for the merge_csvs action
     parser_merge_csvs = subparsers.add_parser('merge_csvs', help='''Brute force csv files merging''')
-    parser_merge_csvs.add_argument('--or_csv_file', '-o', required=True)
+    parser_merge_csvs.add_argument('--or_csv_file', '-o', required=True,
+        help='string containging a comma separated list of csv files to merge')
     parser_merge_csvs.add_argument('--dest_csv_file', '-d', required=False)
+    parser_merge_csvs.set_defaults(func=merge_csvs_wrapper)
 
     # parser for the plot_sample action
     parser_plot_sample = subparsers.add_parser('plot_sample_images', 
         help='''plot a random sample of images from a features dataset''')
     parser_plot_sample.add_argument('--or_csv_file', '-o', required=True)
     parser_plot_sample.add_argument('--shape', '-s', required=False, default='3,3')
+    parser_plot_sample.add_argument('--obj_id', '-i', required=False, type=long)
+    parser_plot_sample.set_defaults(func=plot_images_wrapper)
     
     # parser for getting sample jpegs from SDSS
     parser_get_jpegs = subparsers.add_parser('get_jpegs',
@@ -299,6 +335,7 @@ def define_arguments():
         default=IMAGE_SIZE_PX, help='size of the image side in pixels')
     parser_get_jpegs.add_argument('--n_sample', '-n', required=False, type=int,
         default=100, help='number of sample images to download')
+    parser_get_jpegs.add_argument('--root_folder', '-f', required=False, default='.')
     parser_get_jpegs.set_defaults(func=create_square_images_from_csv)
     
     parser.add_argument('--loglevel', '-l', required=False, default='INFO')
@@ -315,12 +352,8 @@ if __name__ == '__main__':
 
     args.func(args)
 
-    if hasattr(args, 'get_features'):
-        get_features_from_csv_to_csv(args.or_csv_file, args.dest_csv_file, args.scale, args.size)
-    elif hasattr(args, 'merge_csvs'):
-        merge_csvs(args.or_csv_file.split(','), args.dest_csv_file)
-    elif hasattr(args, 'plot_sample_images'):
-        plot_sample_images(args.or_csv_file, args.shape.split(','))
+        
+        
 
 
             
