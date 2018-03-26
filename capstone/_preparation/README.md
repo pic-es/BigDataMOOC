@@ -102,3 +102,41 @@ no van a ser utilizadas para la clasificación, así que para el entreno y valid
 			<td><img src="../../_static/galaxy_elliptic_sample.png"/></td>	
 		</tr>
 	</table>
+
+## Generación de datos de votos buenos
+
+A partir de los campos `p_cs_debiased` y `p_el_debiased` se ha generado una base de datos ficticia de votos.
+
+```./votes.py generate_good_votes -o /nfs/astro/torradeflot/MOOC/GalaxyZoo1/DR14_ZooSpec_10000.csv -d /nfs/astro/torradeflot/MOOC/GalaxyZoo1/DR14_ZooSpec_10000_good_votes.csv
+```
+
+Este script genera un fichero csv de votos con los campos:
+* dr7objid
+* user_id: identificación del usuario que ha hecho el voto
+* 1 o 0: sentido del voto 1=espiral, 0=elíptica
+
+## Comprobación de coherencia de los datos de votos
+
+El mismo script tiene un método para comprobar que las clasificaciones obtenidas a partir de los votos serán 
+las mismas que se obtienen de los datos de ZooSpec:
+
+```
+./votes.py check_votes -o /nfs/astro/torradeflot/MOOC/GalaxyZoo1/DR14_ZooSpec_10000.csv -v /nfs/astro/torradeflot/MOOC/GalaxyZoo1/DR14_ZooSpec_10000_good_votes.csv
+NO errors for fields votes_el and or_el
+NO errors for fields votes_cs and or_cs
+NO errors for fields votes_uc and or_uc
+```
+
+## Generación de datos de votos malos
+
+### Usuarios con voto lejano a la media
+
+El script provee un método para la generación de usuarios que muestran un perfil de voto alejado de la media.
+O sea, usuarios que votan frecuentemente en sentido contrario a la mayoría de gente y que, por lo tanto,
+son susceptibles de generar votos inválidos.
+
+Para a generación de estos usuarios se realizan varios pasos:
+* se calcula el voto medio de cada imagen `mi`.
+* se calcula la "varianza" respecto a la media de cada usuario: `sum((vi - mi)**2)/n` donde `vi` es el voto del 
+usuario para la imagen `i` y `n` es el número de votos del usuario.
+* se generan un numero aleatorio de usuarios malos con un "varianzas" superiores a un límite.  

@@ -129,7 +129,7 @@ def correct_user_votes(votes_df, n_users, max_niter=5, max_good_var=None):
         bad_users = get_bad_users(votes_df, max_good_var)
 
         if len(bad_users) == 0:
-            print 'cleaned bad users at {} iteration'.format(n_iter + 1)
+            print('cleaned bad users at {} iteration'.format(n_iter + 1))
             break
 
         # correct bad users
@@ -139,7 +139,7 @@ def correct_user_votes(votes_df, n_users, max_niter=5, max_good_var=None):
         n_iter += 1
 
     if n_iter >= max_niter:
-        print 'failed to clean bad users!!\n {}'.format(get_bad_users(votes_df))
+        print('failed to clean bad users!!\n {}'.format(get_bad_users(votes_df)))
 
     return votes_df
 
@@ -254,10 +254,10 @@ def generate_good_votes(args):
     min_users = int(n_votes/VOTES_PER_USER_RANGE[1])
     max_users = int(n_votes/VOTES_PER_USER_RANGE[0])
     n_users = np.random.randint(min_users, max_users)
-    print 'initial number of users = {}'.format(n_users)
+    print('initial number of users = {}'.format(n_users))
     votes_df = build_votes(or_df, n_users)
     votes_df = correct_user_votes(votes_df, n_users, 20, MAX_GOOD_VAR)
-    print 'final number of good users = {}'.format(len(votes_df['user_id'].unique()))
+    print('final number of good users = {}'.format(len(votes_df['user_id'].unique())))
     max_good_user_id = votes_df['user_id'].max()
     
     # Check that the number of galaxies of each type is coherent
@@ -281,12 +281,12 @@ def add_bad_votes(args):
     # Add some bad users to be filtered out
     n_bad_users = np.random.randint(int(BAD_USERS_RATIO[0]*n_users), int(BAD_USERS_RATIO[1]*n_users))
     votes_df = add_bad_users(votes_df, n_bad_users, MAX_GOOD_VAR)
-    print 'inserted {} bad users'.format(n_bad_users)
+    print('inserted {} bad users'.format(n_bad_users))
 
     # pop bad users with variance lower than limit and shuffle user ids
     user_vars_df = compute_user_variances(votes_df)
     bad_to_pop = user_vars_df[(user_vars_df.index > max_good_user_id) & (user_vars_df['diff_votes_2'] <= MAX_GOOD_VAR)]
-    print 'found {} bad users with low variances. Going to remove them'.format(len(bad_to_pop))
+    print('found {} bad users with low variances. Going to remove them'.format(len(bad_to_pop)))
     votes_df = remove_users(votes_df, bad_to_pop.index)
     votes_df = shuffle_user_id(votes_df)
 
@@ -365,9 +365,9 @@ def check_df_equality(df, field_1, field_2):
         
     n_errors = len(df[mask])
     if n_errors == 0:
-        print 'NO errors for fields {} and {}'.format(field_1, field_2)
+        print('NO errors for fields {} and {}'.format(field_1, field_2))
     else:
-        print 'Errors for fields {} and {}: {}'.format(field_1, field_2, n_errors)
+        print('Errors for fields {} and {}: {}'.format(field_1, field_2, n_errors))
     
 
 def define_arguments():
