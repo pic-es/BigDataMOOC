@@ -17,6 +17,31 @@ Select * from Zoospec
 
 Especificación de los campos en [Sky Server Schema Browser](http://skyserver.sdss.org/dr14/en/help/browser/browser.aspx#&&history=description+zooSpec+U)
 
+---
+<h3 color="red">Alerta!!!</h3>
+En algunos casos, los valores de los campos `elliptical` y `spiral`  no se corresponden con su definición. Teóricamente:
+
+<table>
+<tr><td>elliptical</td><td>flag for elliptical - 1 if debiased elliptical fraction > 0.8, 0 otherwise</td></tr>
+<tr><td>spiral</td><td>flag for combined spiral - 1 if debiased spiral fraction > 0.8, 0 otherwise</td></tr>
+</table>
+
+En la tabla a continuación se puede ver la correspondencia entre la definición y el valor de los campos.
+
+<table border="1" bgcolor="cornsilk">
+<tbody><tr align="center"><td><font size="-1">p_cs_debiased > 0.8</font></td><td><font size="-1">spiral</font></td><td><font size="-1">p_el_debiased > 0.8</font></td><td><font size="-1">elliptical</font></td><td><font size="-1">recuento</font></td></tr>	
+<tr align="center" bgcolor="#eeeeff"><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">373,719</font></td></tr>
+<tr align="center" bgcolor="#eeeeff"><td nowrap=""><font size="-1">1</font></td><td nowrap=""><font size="-1">1</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">147,138</font></td></tr>
+<tr align="center" bgcolor="#eeeeff"><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">1</font></td><td nowrap=""><font size="-1">1</font></td><td nowrap=""><font size="-1">57,755</font></td></tr>
+<tr align="center" bgcolor="#eeeeff"><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">1</font></td><td nowrap=""><font size="-1">1</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">165</font></td></tr>
+<tr align="center" bgcolor="#eeeeff"><td nowrap=""><font size="-1">1</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">13,628</font></td></tr>
+<tr align="center" bgcolor="#eeeeff"><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">1</font></td><td nowrap=""><font size="-1">4,435</font></td></tr>
+<tr align="center" bgcolor="#eeeeff"><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">1</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">28,182</font></td></tr>
+<tr align="center" bgcolor="#eeeeff"><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">1</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">42,922</font></td></tr>
+</tbody></table>
+
+Sugiero ignorar los campos `elliptical` y `spiral` y utilizar únicamente los campos `p_cs_debiased` y `p_el_debiased`
+---
 
 ## Imágenes de muestra
 
