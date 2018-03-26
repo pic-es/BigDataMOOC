@@ -25,18 +25,24 @@ En algunos casos, los valores de los campos `elliptical` y `spiral`  no se corre
 * **spiral**: flag for combined spiral - 1 if debiased spiral fraction > 0.8, 0 otherwise
 
 En la tabla a continuación se puede ver la correspondencia entre la definición y el valor de los campos.
+<table>
+<tbody>
+	
+<tr align="center"><td><font size="-1">result</font></td><td><font size="-1">type_prob</font></td><td><font size="-1">type_raw</font></td><td><font size="-1">N</font></td></tr>
+<tr></tr>
+<tr align="center" bgcolor="#eeeeff"><td rowspan=3>Coherent values </td><td nowrap=""><font size="-1">uncertain</font></td><td nowrap=""><font size="-1">uncertain</font></td><td nowrap=""><font size="-1">373,719</font></td></tr>
+<tr align="center" bgcolor="#eeeeff"><td nowrap=""><font size="-1">spiral</font></td><td nowrap=""><font size="-1">spiral</font></td><td nowrap=""><font size="-1">147,138</font></td></tr>
+<tr align="center" bgcolor="#eeeeff"><td nowrap=""><font size="-1">elliptical</font></td><td nowrap=""><font size="-1">elliptical</font></td><td nowrap=""><font size="-1">57,755</font></td></tr>
+<tr align="center" bgcolor="#eeeeff"><td rowspan=5>Non coherent values </td><td nowrap=""><font size="-1">uncertain</font></td><td nowrap=""><font size="-1">elliptical</font></td><td nowrap=""><font size="-1">4,435</font></td></tr>
+<tr align="center" bgcolor="#eeeeff"><td nowrap=""><font size="-1">elliptical</font></td><td nowrap=""><font size="-1">spiral</font></td><td nowrap=""><font size="-1">165</font></td></tr>
+<tr align="center" bgcolor="#eeeeff"><td nowrap=""><font size="-1">uncertain</font></td><td nowrap=""><font size="-1">spiral</font></td><td nowrap=""><font size="-1">42,922</font></td></tr>
+<tr align="center" bgcolor="#eeeeff"><td nowrap=""><font size="-1">elliptical</font></td><td nowrap=""><font size="-1">uncertain</font></td><td nowrap=""><font size="-1">28,182</font></td></tr>
+<tr align="center" bgcolor="#eeeeff"><td nowrap=""><font size="-1">spiral</font></td><td nowrap=""><font size="-1">uncertain</font></td><td nowrap=""><font size="-1">13,628</font></td></tr>
 
-<table bgcolor="cornsilk">
-<tbody><tr align="center"><td><font size="-1">p_cs_debiased > 0.8</font></td><td><font size="-1">spiral</font></td><td><font size="-1">p_el_debiased > 0.8</font></td><td><font size="-1">elliptical</font></td><td><font size="-1">recuento</font></td></tr>	
-<tr align="center" bgcolor="#eeeeff"><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">373,719</font></td></tr>
-<tr align="center" bgcolor="#eeeeff"><td nowrap=""><font size="-1">1</font></td><td nowrap=""><font size="-1">1</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">147,138</font></td></tr>
-<tr align="center" bgcolor="#eeeeff"><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">1</font></td><td nowrap=""><font size="-1">1</font></td><td nowrap=""><font size="-1">57,755</font></td></tr>
-<tr align="center" bgcolor="#eeeeff"><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">1</font></td><td nowrap=""><font size="-1">1</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">165</font></td></tr>
-<tr align="center" bgcolor="#eeeeff"><td nowrap=""><font size="-1">1</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">13,628</font></td></tr>
-<tr align="center" bgcolor="#eeeeff"><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">1</font></td><td nowrap=""><font size="-1">4,435</font></td></tr>
-<tr align="center" bgcolor="#eeeeff"><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">1</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">28,182</font></td></tr>
-<tr align="center" bgcolor="#eeeeff"><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">1</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">0</font></td><td nowrap=""><font size="-1">42,922</font></td></tr>
 </tbody></table>
+
+Dónde `type_prob`  es el tipo de galaxia extraído de las probabilidades `p_cs_debiased` y `p_el_debiased` y
+y `type_raw` es  el tipo informado en la tabla ZooSpec.
 
 Sugiero ignorar los campos `elliptical` y `spiral` y utilizar únicamente los campos `p_cs_debiased` y `p_el_debiased`
 
@@ -129,7 +135,7 @@ NO errors for fields votes_uc and or_uc
 
 ## Generación de datos de votos malos
 
-### Usuarios con voto lejano a la media
+### Usuarios con voto contrario a la mayoría
 
 El script provee un método para la generación de usuarios que muestran un perfil de voto alejado de la media.
 O sea, usuarios que votan frecuentemente en sentido contrario a la mayoría de gente y que, por lo tanto,
@@ -139,4 +145,10 @@ Para a generación de estos usuarios se realizan varios pasos:
 * se calcula el voto medio de cada imagen `mi`.
 * se calcula la "varianza" respecto a la media de cada usuario: `sum((vi - mi)**2)/n` donde `vi` es el voto del 
 usuario para la imagen `i` y `n` es el número de votos del usuario.
-* se generan un numero aleatorio de usuarios malos con un "varianzas" superiores a un límite.  
+* se generan un numero aleatorio de usuarios malos con un "varianzas" superiores a un límite.
+* el fichero de salida contiene tanto los usuarios "buenos" como "malos"
+
+```
+./votes.py add_bad_votes -o /nfs/astro/torradeflot/MOOC/GalaxyZoo1/DR14_ZooSpec_10000_good_votes.csv \
+     -d /nfs/astro/torradeflot/MOOC/GalaxyZoo1/DR14_ZooSpec_10000_good_and_bad_votes.csv
+```
