@@ -54,23 +54,28 @@ def compute_votes(row):
     new_p_el = float(votes_el) / float(new_nvotes) 
     new_p_cs = float(votes_cs) / float(new_nvotes)
     
-    if row['p_el_bis'] >= 0.8:
+    if row['p_el_bis'] > 0.8:
         if new_p_el < 0.8:
             votes_el = np.ceil(new_nvotes*0.8)
             votes_cs = new_nvotes - votes_el
-            
-    elif row['p_cs_bis'] >= 0.8:
+        elif new_p_el == 0.8:
+            votes_el += 1
+            votes_cs -= 1
+    elif row['p_cs_bis'] > 0.8:
         if new_p_cs < 0.8:
             votes_cs = np.ceil(new_nvotes*0.8)
             votes_el = new_nvotes - votes_cs
+        elif new_p_cs == 0.8:
+            votes_cs += 1
+            votes_el -= 1
     else:
 
-        while new_p_cs >= 0.8:
+        while new_p_cs > 0.8:
             votes_cs -=1
             votes_el +=1
             new_p_cs = float(votes_cs) / float(new_nvotes)
 
-        while new_p_el >= 0.8:
+        while new_p_el > 0.8:
             votes_el -=1
             votes_cs +=1
             new_p_el = float(votes_el) / float(new_nvotes)
@@ -232,21 +237,21 @@ def generate_good_votes(args):
 
     input_csv = args.or_csv_file
     or_df = pd.read_csv(input_csv)
-    old_n_el = (or_df['p_el_debiased'] >= TARGET_CUT_PERC/100.).sum()
-    old_n_cs = (or_df['p_cs_debiased'] >= TARGET_CUT_PERC/100).sum()
+    old_n_el = (or_df['p_el_debiased'] > TARGET_CUT_PERC/100.).sum()
+    old_n_cs = (or_df['p_cs_debiased'] > TARGET_CUT_PERC/100).sum()
 
     # Modify p_el an p_cs to make them add up to 1
     # check that the percentages for each galaxy type are not changed
     compute_n_votes(or_df)
-    new_n_el = (or_df['p_el_bis'] >= TARGET_CUT_PERC/100.).sum()
-    new_n_cs = (or_df['p_cs_bis'] >= TARGET_CUT_PERC/100.).sum()
+    new_n_el = (or_df['p_el_bis'] > TARGET_CUT_PERC/100.).sum()
+    new_n_cs = (or_df['p_cs_bis'] > TARGET_CUT_PERC/100.).sum()
     check_type_numbers(old_n_el, new_n_el, old_n_cs, new_n_cs)
 
     # Compute the number of votes to keep the number of galaxies of each type
     or_df['n_votes_el'] = or_df.apply(fill_votes_el, axis=1)
     or_df['n_votes_cs'] = or_df.apply(fill_votes_cs, axis=1)
-    new_n_el = (or_df['n_votes_el']/(or_df['n_votes_el'] + or_df['n_votes_cs']) >= TARGET_CUT_PERC/100.).sum()
-    new_n_cs = (or_df['n_votes_cs']/(or_df['n_votes_el'] + or_df['n_votes_cs']) >= TARGET_CUT_PERC/100.).sum()
+    new_n_el = (or_df['n_votes_el']/(or_df['n_votes_el'] + or_df['n_votes_cs']) > TARGET_CUT_PERC/100.).sum()
+    new_n_cs = (or_df['n_votes_cs']/(or_df['n_votes_el'] + or_df['n_votes_cs']) > TARGET_CUT_PERC/100.).sum()
     check_type_numbers(old_n_el, new_n_el, old_n_cs, new_n_cs)
 
     # generate votes DataFrame
@@ -262,8 +267,8 @@ def generate_good_votes(args):
     
     # Check that the number of galaxies of each type is coherent
     votes_p_df = pd.DataFrame(votes_df.groupby('dr7objid')['vote'].mean())
-    new_n_el = (votes_p_df['vote'] <= (100. - TARGET_CUT_PERC)/100.).sum()
-    new_n_cs = (votes_p_df['vote'] >= TARGET_CUT_PERC/100.).sum()
+    new_n_el = (votes_p_df['vote'] < (100. - TARGET_CUT_PERC)/100.).sum()
+    new_n_cs = (votes_p_df['vote'] > TARGET_CUT_PERC/100.).sum()
     check_type_numbers(old_n_el, new_n_el, old_n_cs, new_n_cs)
     
     # save votes Dataframe to csv
@@ -275,8 +280,8 @@ def add_bad_votes(args):
     n_users = len(votes_df['user_id'].unique())
     max_good_user_id = votes_df['user_id'].max()
     votes_p_df = pd.DataFrame(votes_df.groupby('dr7objid')['vote'].mean())
-    old_n_el = (votes_p_df['vote'] <= (100. - TARGET_CUT_PERC)/100.).sum()
-    old_n_cs = (votes_p_df['vote'] >= TARGET_CUT_PERC/100.).sum()
+    old_n_el = (votes_p_df['vote'] < (100. - TARGET_CUT_PERC)/100.).sum()
+    old_n_cs = (votes_p_df['vote'] > TARGET_CUT_PERC/100.).sum()
     
     # Add some bad users to be filtered out
     n_bad_users = np.random.randint(int(BAD_USERS_RATIO[0]*n_users), int(BAD_USERS_RATIO[1]*n_users))
@@ -299,8 +304,8 @@ def add_bad_votes(args):
     bad_users_ids = user_vars_df[user_vars_df['diff_votes_2'] > MAX_GOOD_VAR].index
     good_votes_df = votes_df[~votes_df['user_id'].isin(bad_users_ids)]      
     votes_p_df = pd.DataFrame(good_votes_df.groupby('dr7objid')['vote'].mean())
-    new_n_el = (votes_p_df['vote'] <= (100. - TARGET_CUT_PERC)/100.).sum()
-    new_n_cs = (votes_p_df['vote'] >= TARGET_CUT_PERC/100.).sum()
+    new_n_el = (votes_p_df['vote'] < (100. - TARGET_CUT_PERC)/100.).sum()
+    new_n_cs = (votes_p_df['vote'] > TARGET_CUT_PERC/100.).sum()
     check_type_numbers(old_n_el, new_n_el, old_n_cs, new_n_cs)
 
     # Dump votes_df to file
@@ -317,11 +322,11 @@ def check_votes(args):
     votes_p_df = pd.DataFrame(votes_df.groupby('dr7objid')['vote'].mean())
     
     votes_p_df['votes_el'] = 0
-    mask_el = (votes_p_df['vote'] <= (100. - target_cut)/100.)
+    mask_el = (votes_p_df['vote'] < (100. - target_cut)/100.)
     votes_p_df.loc[mask_el, 'votes_el'] = 1
     
     votes_p_df['votes_cs'] = 0
-    mask_cs = (votes_p_df['vote'] >= target_cut/100.)
+    mask_cs = (votes_p_df['vote'] > target_cut/100.)
     votes_p_df.loc[mask_cs, 'votes_cs'] = 1
     
     votes_p_df['votes_uc'] = 0
@@ -331,11 +336,11 @@ def check_votes(args):
     
     # Compute class from original probabilities
     class_df['or_el'] = 0
-    mask_el = (class_df['p_el_debiased'] >= target_cut/100.)
+    mask_el = (class_df['p_el_debiased'] > target_cut/100.)
     class_df.loc[mask_el, 'or_el'] = 1
     
     class_df['or_cs'] = 0
-    mask_cs = (class_df['p_cs_debiased'] >= target_cut/100.)
+    mask_cs = (class_df['p_cs_debiased'] > target_cut/100.)
     class_df.loc[mask_cs, 'or_cs'] = 1
     
     class_df['or_uc'] = 0

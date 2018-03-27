@@ -45,6 +45,13 @@ Dónde `type_prob`  es el tipo de galaxia extraído de las probabilidades `p_cs_
 y `type_raw` es  el tipo informado en la tabla ZooSpec.
 
 Sugiero ignorar los campos `elliptical` y `spiral` y utilizar únicamente los campos `p_cs_debiased` y `p_el_debiased`
+Utilizando estos para el cálculo del target sobre `DR14_ZooSpec_10000.csv` queda:
+
+<table>
+<tr><td>spiral</td><td>2,410</td></tr>
+<tr><td>elliptical</td><td>1,291</td></tr>
+<tr><td>uncertain</td><td>6,299</td></tr>
+</table>
 
 ---
 
