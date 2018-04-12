@@ -127,3 +127,20 @@ Este conjunto de datos tiene los campos:
 
 ## Ingestión de los datos en HDFS
 
+Vamos a ingestar los datos en HDFS a través del ternimal.
+
+* Abrimos un terminal
+
+* El comando `hdfs dfs -h` nos lista todos los comandos que podemos utilizar
+
+* En este caso haremos un comando put para subir los datos a HDFS:
+
+	```hdfs dfs -put /ruta/local/al/fichero/T_F_DR14_ZooSpec_10000.csv```
+
+* El fichero se subirá a la carpeta del usuario cloudera dentro de HDFS. Si ejecutamos un comando `ls` podemos verificar que se ha subido correctamente. 
+
+	```hdfs dfs -ls -h /user/cloudera```
+
+	En la salida de este comando vemos también que el fichero tiene un tamaño de 605 MiB
+
+
