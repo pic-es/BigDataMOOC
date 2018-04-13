@@ -143,4 +143,8 @@ Vamos a ingestar los datos en HDFS a través del ternimal.
 
 	En la salida de este comando vemos también que el fichero tiene un tamaño de 605 MiB
 
+## Tratamiento de los datos con Spark
+
+A partir de est punto debes abrir una sesión de Spark y seguir las indicaciones del notebook `Load_data_spark.ipynb`
+
 
