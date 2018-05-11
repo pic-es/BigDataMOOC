@@ -45,7 +45,10 @@ Mirar las imagenes para ver si es posible reconocer los distintos tipos (elípti
 
 __Pregunta__ Abre la imagen correspondiente a la entrada numero 2 del fichero a. De que tipo es?
 
-
+__Ejercicio__ 
+Convertir las imágenes en la carpeta
+/nfs/astro/torradeflot/MOOC/GalaxyZoo1/images/0.4/64x64/
+a un csv con la infor dr7objid y 4096 features
 
 
 
