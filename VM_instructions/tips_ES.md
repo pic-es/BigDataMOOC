@@ -68,7 +68,7 @@ y en _Aceptar_ para cerrar el menú de preferencias de carpetas compartidas.
 
 ### Montamos la carpeta compartida dentro de la máquina virtual
 
-Para montar la carpeta solamente para la sesión actual:
+**Para montar la carpeta solamente para la sesión actual:**
 
 * Abrimos un terminal.
 
@@ -86,7 +86,7 @@ Ahora ya podemos visualizarla y acceder a su contenido.
 
 	![shared_folder_browse](_static/browse_shared_folder.png)
 
-En caso que queramos montarla permanentemente,
+**En caso que queramos montarla permanentemente**
 debemos incluir el montaje en el fichero /etc/fstab. Seguimos los siguientes pasos:
 
 * Abrimos un terminal
@@ -98,10 +98,9 @@ debemos incluir el montaje en el fichero /etc/fstab. Seguimos los siguientes pas
 * Pulsamos la tecla `i` para entrar en el modo edición y bajamos hasta el final del documento con las flechas de navegación.
 * Añadimos la siguiente información al final del fichero para el montaje de la carpeta compartida:
 
-	`{shared_folder}                    {vm_folder}     vboxsf  defaults        0 0`
+	`{shared_folder}                    {vm_folder}     vboxsf  uid=501,gid=501,defaults        0 0`
 
 	![shared_folder_fstab](_static/fstab_shared_folder.png)
-
 
 * Pulsamos `Esc` para salir del modo de edición
 * Tecleamos `:wq` e `Intro` para guardar y salir
