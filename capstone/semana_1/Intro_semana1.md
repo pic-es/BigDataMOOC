@@ -1,10 +1,6 @@
 ## Presentación del proyecto y de los datos
 En este proyecto Capstone tendréis la posibilidad de aplicar las técnicas y herramientas que han sido presentadas en los cursos pasados a un caso práctico.
 
-Os guiaremos para que crees un clasificador de imágenes, para que se pueda aplicar a un volumen grande datos.
-
-Finalmente, tendréis que preparar un informe con los resultados de tu trabajo.
-
 ## Caso práctico 
 
 Habéis tenido nunca la ocasión de contemplar el cielo en una noche despejada, sin luna, y lejos de las luces de las ciudades? El ojo humano es capaz de captar solo una pequeña parte de los mile de millones de estrellas que nos rodean.
@@ -62,3 +58,7 @@ La herramientas que vamos a utilizar son:
 * Spark para el análisis, visualización e interpretación de los resultados.
 
 Estas herramientas se van a proporcionar mediante la máquina virtual de Cloudera (referencia a las instrucciones).
+
+
+En resumen: Os guiaremos para que crees un clasificador de imágenes, para que se pueda aplicar a un volumen grande datos.
+Finalmente, tendréis que preparar un informe con los resultados de tu trabajo.
