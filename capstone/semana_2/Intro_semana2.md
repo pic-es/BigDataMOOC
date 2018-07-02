@@ -4,6 +4,28 @@ Como ya se comentó la semana pasada, el proyecto [GalaxyZoo](https://www.zooniv
 
 El objetivo fundamental de esta segunda semana es definir un modelo de datos que sirva por un lado para almacenar correctamente esa información, y por otro para poder analizarla plenamente y de manera eficiente.
 
+## Outline
+
+Explicar como funciona la plataforma galaxy zoo, los distontos proyectos que la usan y pq es tan interesante.
+
+Reiterar el objetivo de este capstone, clasificar la forma de  las galaxias.
+Nosotros trabajamos sobre catalogos enooormes de galaxias. Cada galaxia es un objecto celeste con muchas propiedades (color, distancia, posicion en el cielo, brillo, forma, etc.). Al contrario que el color, el brillo o la distancia, que són propiedades cuantitativas y pueden medirse de manera directa, la forma es mucho más dificil de valorar ya que es una propiedad cualitativa que debe evaluarse de manera más subjetiva y no puede automatizarse directamente.
+
+Mostramos el catalogo de galaxias, para explicar las distintas propiedades. Perder el tiempo si se quiere explicando como se mide alguna de ellas, y explicar que nos "falta" la propiedad de la forma.
+
+Para llevar a cabo la estimación/clasificación de la forma de las galaxias usaremos los recursos de la plataforma galaxyzoo. Los usuarios de esta plataforma nos van a ayudar a clasificar un pequeño set de datos de manera manual a partir de la imagen de la galaxia, ayudandose de unos consejos/patrones para identificar el tipo de forma de cada galaxia.
+
+Aquí introducir el catálogo de imágenes. Mostrar algunas imágenes. Introducir los consejos o patrones que se van a utilizar para determinar si una imagen corresponde a una espiral o eliptica.
+Mostrar algun ejemplo claros de espirales y elipticas, y también algun caso raro o inclasificable, para que vean que no todo es taaaan facil de clasificar.
+Pedirles como ejercicio que clasifiquen media docena de galaxias (puede ir para el quiz). Si antes hemos introducido el conjunto de datos de las galaxias, y ahora acabammos de introducir el de imagenes, que hagan el ejercicio de pensar que datos estan generando ahora con su clasificación manual.
+Que datos deberíamos o nos gustaría guardar de su clasificación? Además de la imagen y el voto/clasificación, queremos guardar seguramente el usuario que lo ha hecho, o cuanto tiempo tardó en clasificar una imagen, el pais, edad?
+
+Presentar un modelo de datos incompleto que incluya imagenes, usuarios y votos
+
+Una vez pensado el modelo y los datos que queremos recoger, podríamos subir las imagenes a galaxyzoo y pedir a los usuarios de la plataforma que nos los clasifiquen.
+Luego, a partir del análisis de todos los votos vamos a clasificar/extraer la forma más votada para cada galaxia, pero esto ya será la semana que viene...
+
+
 ## Modelado de los datos
 
 Lo primero que tenemos que hacer para crear un correcto modelo de datos es conocer los datos en sí mismo.
