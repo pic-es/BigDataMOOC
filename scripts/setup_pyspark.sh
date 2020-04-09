@@ -2,7 +2,7 @@
 
 ANACONDA_FILE=Anaconda3-4.2.0-Linux-x86_64.sh
 ANACONDA_LOCAL_FILE=/tmp/$ANACONDA_FILE
-ANACONDA_REMOTE_FILE=https://repo.continuum.io/archive/$ANACONDA_FILE
+ANACONDA_REMOTE_FILE=https://repo.anaconda.com/archive/$ANACONDA_FILE
 ANACONDA_MD5=4692f716c82deb9fa6b59d78f9f6e85c
 
 # Download and install Anaconda
