@@ -9,7 +9,8 @@ ANACONDA_MD5=4692f716c82deb9fa6b59d78f9f6e85c
 CONDA_VERSION=$(conda --version 2> /dev/null)
 if [ "$CONDA_VERSION" != "conda 4.2.9" ]
 then
-  curl -o $ANACONDA_LOCAL_FILE $ANACONDA_REMOTE_FILE
+  #curl -o $ANACONDA_LOCAL_FILE $ANACONDA_REMOTE_FILE
+  wget -P /tmp $ANACONDA_REMOTE_FILE
   FILE_MD5=$(md5sum $ANACONDA_LOCAL_FILE | awk '{print $1}')
   if [ "$ANACONDA_MD5" != "$FILE_MD5" ]
   then
